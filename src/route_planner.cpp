@@ -53,23 +53,27 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Remove that node from the open_list.
 // - Return the pointer.
 
-
+/**
 bool compare (RouteModel::Node * node1, RouteModel::Node * node2){
         float dist1 = node1->h_value + node1->g_value;
         float dist2 = node2->h_value + node2->g_value;
         return dist1 > dist2;
 }
-
+**/
 
 RouteModel::Node *RoutePlanner::NextNode() {
     
     RouteModel::Node* lowest_sum_node;
-    std::sort(open_list.begin(), open_list.end(), compare);
+    std::sort(open_list.begin(), open_list.end(), 
+              [](const RouteModel::Node *a, const RouteModel::Node *b)
+                {
+                    return (a->h_value+a->g_value) > (b->h_value+b->g_value); 
+                }
+             );
     lowest_sum_node = open_list.back();
     open_list.pop_back();
     return lowest_sum_node;
 }
-
 
 
 
@@ -128,5 +132,4 @@ void RoutePlanner::AStarSearch() {
     }
     
 }
-
 
